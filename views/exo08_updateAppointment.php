@@ -4,16 +4,16 @@ include '../init/function.php';
 require_once '../models/database.php';
 require_once '../models/patient.php';
 require_once '../models/appointment.php';
-require_once '../controllers/exo8_updateAppointmentController.php';
+require_once '../controllers/exo08_updateAppointmentController.php';
 ?>
 <!doctype html>
 <html lang=fr dir="ltr">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="/partie2/assets/libraries/bootstrap-4.3.1-dist/css/bootstrap.min.css" />
-        <link href="/partie2/assets/css/style.css" rel="stylesheet" />
-        <title>PDO P2 exo8</title>
+        <link rel="stylesheet" href="../assets/libraries/bootstrap-4.3.1-dist/css/bootstrap.min.css" />
+        <link href="../assets/css/style.css" rel="stylesheet" />
+        <title>PDO P2 exo 08</title>
     </head>
     <body class="lightBody">
         <img class="seal" src="../assets/img/banExo1.jpg" alt="seal"/>

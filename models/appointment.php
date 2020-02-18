@@ -213,8 +213,26 @@ class Appointment extends Database {
    }
 }
 
+/**
+     * méthode permettant de trouver un rendez-vous dans la BDD
+     * @return boolean
+     */
+ public function getAppointmentDetails() {
+        try {
+            $sql = 'SELECT DATE_FORMAT(`dateHour`, "%Y-%m-%d") AS date, DATE_FORMAT(`dateHour`, "%H:%i") AS hour
+                    FROM `appointments`
+                    WHERE `id` = :id';
+            $result = $this->db->prepare($sql);
+            $result->bindValue(':id', $this->id, PDO::PARAM_INT);
+            $result->execute();
+            return $result->fetch(PDO::FETCH_OBJ);
+        } catch (PDOException $e) {
+            die('Error : ' . $e->getMessage());
+        }
+    }
+
  /**
-     * méthode permettant de supprimer un redez-vous rendez-vous dans la BDD
+     * méthode permettant de supprimer un rendez-vous dans la BDD
      * @return boolean
      */
     public function deleteAppointment() {

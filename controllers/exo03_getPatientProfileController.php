@@ -18,17 +18,16 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 
 //vérification que les requêtes se sont bien passées
     if (!is_object($patientProfile) || !is_array($appointmentList)) {
-        header('Location: ../views/exo11_deletePatient.php');
+        header('Location: ../views/exo02_getPatientList.php');
         exit();
     }
 } else {
-    header('location: ../views/exo11_deletePatient.php');
+    header('location: ../views/exo02_getPatientList.php');
     exit();
 }
 // lecture des notifications
-if (isset($_SESSION['patientUpdated'])) {
-    $message = $_SESSION['patientUpdated'];
-    unset($_SESSION['patientUpdated']);
+if (isset($_SESSION['successMessage'])) {
+    $message = $_SESSION['successMessage'];
+    unset($_SESSION['successMessage']);
 }
 ?>
-

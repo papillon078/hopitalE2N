@@ -14,6 +14,8 @@ define('REGEX_NAME', '/^[a-zA-ZÀ-ÿ’ -]+$/');
 define('REGEX_BIRTHDATE', '/^(19|20)[0-9]{2}-[0-9]{2}-[0-9]{2}$/');
 define('REGEX_PHONE', '/^(0|\+33)[1-9]([-\. ]?[0-9]{2}){4}$/');
 define('REGEX_MAIL', '/^[a-zA-Z0-9\._-]+@[a-zA-Z0-9\._-]{2,}\.[a-z]{2,4}$/');
+
+// detection de l'envoi du formulaire mis à jour
 if (isset($_POST['submit'])) {
 
     // récupération des données du formulaire
@@ -83,8 +85,8 @@ if (isset($_POST['submit'])) {
         
 // envoie de la notification de succes d'ecriture de la base de donnée
         if ($success){
-            $_SESSION['patientUpdated'] = 'Le profil du patient a bien été mis à jour';
-            header('location: /partie2/views/exo3_getPatientProfile.php?id='.$patient->id);
+            $_SESSION['successMessage'] = 'Le profil du patient a bien été mis à jour';
+            header('location: /partie2/views/exo03_getPatientProfile.php?id='.$patient->id);
             exit();
             }
     }

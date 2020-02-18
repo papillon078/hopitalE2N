@@ -18,7 +18,7 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 
 // verification que la requete s'est bien passé
     if (!is_object($appointmentProfile)) {
-        header('location:exo6_getAppointmentList.php');
+        header('location:exo06_getAppointmentList.php');
         exit();
     }
 } else {
@@ -27,9 +27,9 @@ if (isset($_GET['id']) && $_GET['id'] > 0) {
 }
 
 // lecture des notifications
-if (isset($_SESSION['appointmentUpdated'])) {
-    $message = $_SESSION['appointmentUpdated'];
-    unset($_SESSION['appointmentUpdated']);
+if (isset($_SESSION['successMessage'])) {
+    $message = $_SESSION['successMessage'];
+    unset($_SESSION['successMessage']);
 }
 
 ?>

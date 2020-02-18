@@ -4,16 +4,16 @@ include '../init/function.php';
 require_once '../models/database.php';
 require_once '../models/patient.php';
 require_once '../models/appointment.php';
-require_once '../controllers/exo5_createAppointmentController.php';
+require_once '../controllers/exo05_createAppointmentController.php';
 ?>
 <!doctype html>
 <html lang=fr dir="ltr">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="/partie2/assets/libraries/bootstrap-4.3.1-dist/css/bootstrap.min.css" />
-        <link href="/partie2/assets/css/style.css" rel="stylesheet" />
-        <title>PDO P2 exo5</title>
+        <link rel="stylesheet" href="../assets/libraries/bootstrap-4.3.1-dist/css/bootstrap.min.css" />
+        <link href="../assets/css/style.css" rel="stylesheet" />
+        <title>PDO P2 exo 05</title>
     </head>
     <body class="lightBody">
         <img class="seal" src="../assets/img/banExo1.jpg" alt="seal"/>
@@ -59,8 +59,8 @@ require_once '../controllers/exo5_createAppointmentController.php';
             </section>
         </div>
         <?php include '../footer.html'; ?>
-        <script src="/partie2/assets/libraries/jquery/jquery-3.4.1.min.js"></script>
-        <script src="/partie2/assets/libraries/bootstrap-4.3.1-dist/js/bootstrap.min.js" rel="stylesheet"></script>
-        <script src="/partie2/assets/js/script.js"></script>
+        <script src="../assets/libraries/jquery/jquery-3.4.1.min.js"></script>
+        <script src="../assets/libraries/bootstrap-4.3.1-dist/js/bootstrap.min.js" rel="stylesheet"></script>
+        <script src="../assets/js/script.js"></script>
     </body>
 </html>

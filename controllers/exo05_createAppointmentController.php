@@ -64,8 +64,8 @@ if (isset($_POST['submit'])) {
 
 // création d'un message de confirmation de création de rendez-vous
         if ($success){
-        $_SESSION['appointmentCreated'] = 'Le rendez vous a été créé avec succès';
-        header('location: /partie2/views/exo10_deleteAppointment.php');
+        $_SESSION['successMessage'] = 'Le rendez vous a été créé avec succès';
+        header('location: /partie2/views/exo06_getAppointmentList.php');
         exit();
         }
     }

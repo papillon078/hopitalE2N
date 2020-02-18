@@ -95,8 +95,8 @@ if (isset($_POST['submit'])) {
 
 // création d'un message de confirmation, si la requète a bien réussie        
         if ($success) {
-            $_SESSION['appointmentUpdated'] = 'Le rendez-vous a bien été mis à jour';
-            header('location: /partie2/views/exo7_getAppointmentProfile.php?id=' . $appointment->id);
+            $_SESSION['successMessage'] = 'Le rendez-vous a bien été mis à jour';
+            header('location: /partie2/views/exo07_getAppointmentProfile.php?id=' . $appointment->id);
             exit();
         }
     }
