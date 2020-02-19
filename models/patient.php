@@ -10,10 +10,9 @@ class Patient extends Database {
     public $birthdate;
     public $phone;
     public $mail;
-    
     // initialisation du tableau d'erreurs
     public $formErrors = array();
-    
+
     /**
      * connexion à la base de données
      * le constructeur hérite du construct de la classe parente
@@ -41,23 +40,21 @@ class Patient extends Database {
             $query = "INSERT INTO `patients` (`lastname`, `firstname`, `birthdate`, `phone`, `mail`)
                   VALUES
                   (:lastname, :firstname, :birthdate, :phone, :mail)";
-            
-            
+
+
             // preparation de la requete au serveur de bdd
             $result = $this->db->prepare($query);
-            
+
             // association des marqueurs nommées aux véritables informations
-                $result->bindValue(':lastname', $this->lastname, PDO::PARAM_STR);
-                $result->bindValue(':firstname', $this->firstname, PDO::PARAM_STR);
-                $result->bindValue(':birthdate', $this->birthdate, PDO::PARAM_STR);
-                $result->bindValue(':phone', $this->phone, PDO::PARAM_STR);
-                $result->bindValue(':mail', $this->mail, PDO::PARAM_STR);
-                
+            $result->bindValue(':lastname', $this->lastname, PDO::PARAM_STR);
+            $result->bindValue(':firstname', $this->firstname, PDO::PARAM_STR);
+            $result->bindValue(':birthdate', $this->birthdate, PDO::PARAM_STR);
+            $result->bindValue(':phone', $this->phone, PDO::PARAM_STR);
+            $result->bindValue(':mail', $this->mail, PDO::PARAM_STR);
+
             // execution de la requete
             // renvoi TRUE en cas de succès sinon FALSE là où j'appelle ma méthode addPatient(ctrl)
             return $result->execute();
-            
-            
         }
         //bloc catch de renvoi des erreurs
         catch (PDOException $e) {
@@ -69,78 +66,84 @@ class Patient extends Database {
      * méthode permettant de récupérer la liste de tous les patients
      * @return array
      */
-    public function getPatientList() {
-        
+    public function getPatientList($lenght) {
+
         //definition de la requete SQL 
-        $query = 'SELECT `id`, `lastname`, `firstname`, `birthdate`, `phone`, `mail` FROM `patients` ORDER BY `id` DESC';
-        
-        // soumission de la requete au serveur de bdd
-        $result = $this->db->query($query);
-        
-        // recuperation de la liste des clients sous forme d'un tableau d'objets
-        return $result->fetchall(PDO::FETCH_OBJ);
-         
-    }
-    
-    public function hasUniqueMail(){
-        
-        //definition de la requete SQL
-        $query = 'SELECT `id`, `mail` FROM `patients` WHERE `mail`= :mail';
-        
+        $query = "SELECT  `lastname`, 
+                         `firstname`
+                FROM `patients` 
+                LIMIT 10 OFFSET :lenght";
+
         // preparation de la requete au serveur de bdd
             $result = $this->db->prepare($query);
-            
-        // association des marqueurs nommées aux véritables informations
-            $result->bindValue(':mail', $this->mail, PDO::PARAM_STR);
         
-        try{
+        // association des marqueurs nommées aux véritables informations
+            $result->bindValue(':lenght', $lenght, PDO::PARAM_INT);
+          
+        // execution de la requete  
             $result->execute();
-            
+
+        // recuperation de la liste des clients sous forme d'un tableau d'objets
+        return $result->fetchall(PDO::FETCH_OBJ);
+    }
+
+    public function hasUniqueMail() {
+
+        //definition de la requete SQL
+        $query = 'SELECT `id`, `mail` FROM `patients` WHERE `mail`= :mail';
+
+        // preparation de la requete au serveur de bdd
+        $result = $this->db->prepare($query);
+
+        // association des marqueurs nommées aux véritables informations
+        $result->bindValue(':mail', $this->mail, PDO::PARAM_STR);
+
+        try {
+            $result->execute();
+
             // recuperation du premier email correspondant trouvé dans un objet
             $check = $result->fetch(PDO::FETCH_OBJ);
-            
+
             // verification que le mail existe deja ET appartient à un autre patient
-            if (is_object($check) && $check->id !== $this->id){
+            if (is_object($check) && $check->id !== $this->id) {
                 return false;
             } else {
                 return true;
             }
-            
         } catch (PDOException $e) {
-             die('erreur : ' . $e->getMessage());
+            die('erreur : ' . $e->getMessage());
         }
     }
-    
-    public function getPatientByMail(){
-        
+
+    public function getPatientByMail() {
+
         //definition de la requete SQL
         $query = 'SELECT `id` FROM `patients` WHERE `mail`= :mail';
-        
+
         // preparation de la requete au serveur de bdd
-            $result = $this->db->prepare($query);
-            
+        $result = $this->db->prepare($query);
+
         // association des marqueurs nommées aux véritables informations
-            $result->bindValue(':mail', $this->mail, PDO::PARAM_STR);
-        
-        try{
+        $result->bindValue(':mail', $this->mail, PDO::PARAM_STR);
+
+        try {
             $result->execute();
-            
+
             // recuperation du premier email correspondant trouvé dans un objet
             return $result->fetch(PDO::FETCH_OBJ);
-            
         } catch (PDOException $e) {
-             die('erreur : ' . $e->getMessage());
+            die('erreur : ' . $e->getMessage());
         }
     }
-    
+
     /**
      * méthode permettant de récupérer profil d'un patient
      * @return array
      */
     public function getPatientProfile() {
-        try{
-        // définition de la requête sql
-        $query = "SELECT    `id`,
+        try {
+            // définition de la requête sql
+            $query = "SELECT    `id`,
                             `lastname`, 
                             `firstname`, 
                             DATE_FORMAT(`birthdate`, '%e/%m/%Y') AS `birthdate`,
@@ -150,30 +153,28 @@ class Patient extends Database {
                 FROM `patients` 
                 WHERE `id` = :id";
 
-         // soumission de la requête au serveur de la base de données
-        $result = $this->db->prepare($query);
+            // soumission de la requête au serveur de la base de données
+            $result = $this->db->prepare($query);
 
-        // association des marqueurs nommés aux véritables informations
-        $result->bindValue(':id', $this->id, PDO::PARAM_INT);
+            // association des marqueurs nommés aux véritables informations
+            $result->bindValue(':id', $this->id, PDO::PARAM_INT);
 
-        $result->execute();
-        
-        // récupération de la liste des patients sous forme d'un tableau d'objets
-        return $result->fetch(PDO::FETCH_OBJ);
-        
+            $result->execute();
+
+            // récupération de la liste des patients sous forme d'un tableau d'objets
+            return $result->fetch(PDO::FETCH_OBJ);
+        } catch (PDOException $e) {
+            die('erreur : ' . $e->getMessage());
+        }
     }
-    catch (PDOException $e) {
-        die('erreur : ' . $e->getMessage());
-   }
-}
 
     /**
      * méthode permettant de mettre à jour le profil d'un patient
-    * @return boolean
-    */
+     * @return boolean
+     */
     public function updatePatient() {
 
-        try{
+        try {
 
             // définition de la requête sql
             $query = "  UPDATE  `patients`
@@ -186,7 +187,7 @@ class Patient extends Database {
 
             // preparation de la requete au serveur de bdd
             $result = $this->db->prepare($query);
-                
+
             // association des marqueurs nommées aux véritables informations
             $result->bindValue(':id', $this->id, PDO::PARAM_INT);
             $result->bindValue(':lastname', $this->lastname, PDO::PARAM_STR);
@@ -194,7 +195,7 @@ class Patient extends Database {
             $result->bindValue(':birthdate', $this->birthdate, PDO::PARAM_STR);
             $result->bindValue(':phone', $this->phone, PDO::PARAM_STR);
             $result->bindValue(':mail', $this->mail, PDO::PARAM_STR);
-                
+
             // execution de la requete
             // renvoi TRUE en cas de succès sinon FALSE là où j'appelle ma méthode addPatient(ctrl)
             return $result->execute();
@@ -204,39 +205,36 @@ class Patient extends Database {
         catch (PDOException $e) {
             die('echec de la connexion : ' . $e->getMessage());
         }
-}
+    }
 
     /**
      * méthode permettant de récupérer l'id d'un patient grace à son e-mail
      * @return integer
      */
     public function getPatientIdByMail() {
-        try{
-        // définition de la requête sql
-        $query = "SELECT `id`
+        try {
+            // définition de la requête sql
+            $query = "SELECT `id`
                   FROM `patients` 
                   WHERE `mail` = :mail";
 
-         // soumission de la requête au serveur de la base de données
-        $result = $this->db->prepare($query);
+            // soumission de la requête au serveur de la base de données
+            $result = $this->db->prepare($query);
 
-        // association des marqueurs nommés aux véritables informations
-        $result->bindValue(':mail', $this->mail, PDO::PARAM_STR);
+            // association des marqueurs nommés aux véritables informations
+            $result->bindValue(':mail', $this->mail, PDO::PARAM_STR);
 
-        $result->execute();
-        
-        // récupération de l'id du patient correspndant au mail renseigné 
-        // sous forme d'un objet
-        return $result->fetch(PDO::FETCH_OBJ);
-        
+            $result->execute();
+
+            // récupération de l'id du patient correspndant au mail renseigné 
+            // sous forme d'un objet
+            return $result->fetch(PDO::FETCH_OBJ);
+        } catch (PDOException $e) {
+            die('erreur : ' . $e->getMessage());
+        }
     }
-    catch (PDOException $e) {
-        die('erreur : ' . $e->getMessage());
-   }
-}
-  
- 
-/**
+
+    /**
      * méthode permettant de supprimer un patient dans la BDD
      * @return boolean
      */
@@ -246,18 +244,16 @@ class Patient extends Database {
             //definition de la requete SQL avec des marqueurs nommés
             $query = " DELETE FROM `patients` 
                         WHERE   `id` = :id ";
-            
+
             // preparation de la requete au serveur de bdd
             $result = $this->db->prepare($query);
-            
+
             // association des marqueurs nommées aux véritables informations
-                $result->bindValue(':id', $this->id, PDO::PARAM_INT);
-                
+            $result->bindValue(':id', $this->id, PDO::PARAM_INT);
+
             // execution de la requete
             // renvoi TRUE en cas de succès sinon FALSE
             return $result->execute();
-            
-            
         }
         //bloc catch de renvoi des erreurs
         catch (PDOException $e) {
@@ -265,7 +261,37 @@ class Patient extends Database {
         }
     }
 
-} 
+    /**
+     * méthode permettant de récupérer la liste de patients correspondant à la 
+     * recherche
+     * @return array
+     */
+    public function getSearchList($search) {
 
+        try {
+            //definition de la requete SQL 
+            $query = "SELECT    `lastname`, 
+                                `firstname` 
+                        FROM    `patients` 
+                        WHERE `lastname` LIKE :search OR `firstname` LIKE :search2
+                        ORDER BY    `id` DESC";
+
+            // soumission de la requête au serveur de la base de données
+            $result = $this->db->prepare($query);
+
+            // association des marqueurs nommés aux véritables informations
+            $result->bindValue(':search', $search, PDO::PARAM_STR);
+            $result->bindValue(':search2', $search, PDO::PARAM_STR);
+
+            $result->execute();
+
+            // récupération de la liste des patients sous forme d'un tableau d'objets
+            return $result->fetchall(PDO::FETCH_OBJ);
+        } catch (PDOException $e) {
+            die('erreur : ' . $e->getMessage());
+        }
+    }
+
+}
 
 ?>

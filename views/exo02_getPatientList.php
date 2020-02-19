@@ -3,6 +3,7 @@ session_start();
 require_once '../models/database.php';
 require_once '../models/patient.php';
 require_once '../controllers/exo02_getPatientListController.php';
+var_dump(count($patientList));
 ?>
 <!doctype html>
 <html lang=fr dir="ltr">
@@ -20,13 +21,23 @@ require_once '../controllers/exo02_getPatientListController.php';
             <div class="row">
                 <!-- Lecture des notifications -->
                 <?= isset($message) ? '<div class="alert alert-success col-12 text-center text-uppercase" role="alert">' . $message . '</div>' : '' ?>
-                
+
                 <!-- redirection vers la page de création de patient-->
                 <button type="" name="submit" value="Envoi" class="col-12 btn btn-success mb-3">  
                     <a href="exo01_createPatient.php" class="redirection"> Ajouter un patient</a>
                 </button>
-                
-                <h1>Liste des patients inscrits</h1>
+                <div class="col-6">
+                    <h1>Liste des patients inscrits</h1>
+                </div>
+
+                <!-- barre de recherche -->
+                <form action="#" method="POST" class="form-inline col-6">
+                    <input class="form-control mr-sm-2" type="search" name="keywords" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" name="submit" type="submit" value="Search">Search</button>
+                    <button class="ml-3 btn btn-outline-success my-2 my-sm-0" name="fullList" type="submit" value="reset">liste complète</button>
+                </form>
+
+                <!-- entête du tableau d'affichage des clients -->
                 <table class="table table-striped text-center col-12 border border-primary mx-auto my-2">
                     <thead class="bg-warning">
                         <tr>
@@ -36,6 +47,7 @@ require_once '../controllers/exo02_getPatientListController.php';
                             <th scope="col">supprimer le profil</th>
                         </tr>
                     </thead>
+                    
                     <?php
                     // foreach dans un tableau d'objets permet de choisir la colonne de la table de la BDD
                     foreach ($patientList as $item) {
@@ -49,7 +61,7 @@ require_once '../controllers/exo02_getPatientListController.php';
                             <td class="text-center" data-toggle="modal" data-target="#deletePatient">
                                 <button type="button" class="btn" data-toggle="modal" data-target="#deletePatient<?= $item->id ?>">
                                     <img src="../assets/img/deleteCross.png" alt="croix suppression" />
-                                </a>
+                                    </a>
                                 </button>
                             </td>
                         </tr>
@@ -81,6 +93,25 @@ require_once '../controllers/exo02_getPatientListController.php';
                         </div>
                     <?php } ?>
                 </table>
+
+                <!-- Pagination en bas de page -->
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" href="exo02_getPatientList.php?page=<?= $_GET['page']==1 ? 1 : $_GET['page']-1 ?>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="exo02_getPatientList.php?page=1">1</a></li>
+                        <li class="page-item"><a class="page-link" href="exo02_getPatientList.php?page=2">2</a></li>
+                        <li class="page-item"><a class="page-link" href="exo02_getPatientList.php?page=3">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="exo02_getPatientList.php?page=<?= count($patientList) < 10 ? $_GET['page'] : $_GET['page']+1 ?>" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
 

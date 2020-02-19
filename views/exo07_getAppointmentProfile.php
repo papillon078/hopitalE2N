@@ -46,12 +46,12 @@ require_once '../controllers/exo07_getAppointmentProfileController.php';
 
                     <!-- Bouton de retour à la liste des rendez-vous -->
                     <div class="col-6 mt-3 justify-content-end">
-                        <a href="exo06_getAppointmentList.php"><img src="../assets/img/patientListReturn.png" class="w-50" alt="fleche" /></a>
+                        <a href="exo06_getAppointmentList.php"><img src="../assets/img/appointmentListReturn.png" class="w-50" alt="fleche" /></a>
                     </div>
 
                     <!-- Bouton de modification du profil patient -->
                     <div class="col-6 mt-3">
-                        <a href="exo08_updateAppointment.php?id=<?= $appointmentProfile->id ?>"><img src="../assets/img/profileUpdate.png" class="w-50" alt="fleche" /></a>
+                        <a href="exo08_updateAppointment.php?id=<?= $appointmentProfile->id ?>"><img src="../assets/img/appointmentUpdate.png" class="w-50" alt="fleche" /></a>
                     </div>
             </div>
         </div>
